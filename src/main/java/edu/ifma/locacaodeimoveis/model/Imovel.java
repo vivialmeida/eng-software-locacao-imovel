@@ -2,74 +2,60 @@ package edu.ifma.locacaodeimoveis.model;
 
 import lombok.Data;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import java.io.Serializable;
 import java.math.BigDecimal;
+
+import java.util.Objects;
+import java.util.Set;
+import java.util.LinkedHashSet;
+
+
+import javax.persistence.*;
 
 @Data
 @Entity
-public class Imovel implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long idImovel;
+@Table(name = "imovel")
+public class Imovel {
 
-    @Enumerated(EnumType.ORDINAL)
-    private TipoImovel tipoImovel;
-    @NotEmpty(message = "O nome do imóvel deve ser informado")
-    private String nome;
-    @NotEmpty(message = "O endereco deve ser informado")
-    private String endereco;
-    @NotEmpty(message = "O bairro do imóvel deve ser informado")
-    private String bairro;
-    private int cep;
-    private double metragem;
-    private int dormitorios;
-    private int banheiros;
-    private int suites;
-    private int vagasGaragem;
-    private BigDecimal valorAluguelSugerido;
-    private String observacao;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-        result = prime * result + ((endereco == null) ? 0 : endereco.hashCode());
-        result = prime * result + ((bairro == null) ? 0 : bairro.hashCode());
-        return result;
-    }
+	@Column(name = "nome_imovel", length = 100, nullable = false)
+	private String nomeImovel;
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof Imovel)) {
-            return false;
-        }
-        Imovel other = (Imovel) obj;
-        if (nome == null) {
-            if (other.nome != null) {
-                return false;
-            }
-        } else if (!nome.equals(other.nome)) {
-            return false;
-        }
-        if (endereco == null) {
-            if (other.endereco != null) {
-                return false;
-            }
-        } else if (!endereco.equals(other.endereco)) {
-            return false;
-        }
-        if (bairro == null) {
-            return other.bairro == null;
-        } else return bairro.equals(other.bairro);
-    }
+	@Column(precision = 10, scale = 2, nullable = false)
+	private BigDecimal metragem;
+
+	@Column(name = "quantidade_dormitorios", nullable = false)
+	private Integer quantidadeDomitorios;
+
+	@Column(name = "quantidade_banheiros", nullable = false)
+	private Integer quantidadeBanheiros;
+
+	@Column(name = "quantidade_suites", nullable = false)
+	private Integer quantidadeSuites;
+
+	@Column(name = "vagas_garagem", nullable = false)
+	private Integer vagasGaragem;
+
+	@Column(name = "valor_aluguel_sugerido", precision = 10, scale = 2, nullable = true)
+	private BigDecimal valorAluguelSugerido;
+
+	@Column(name = "valor_iptu", precision = 10, scale = 2, nullable = true)
+	private BigDecimal valorIPTU;
+
+	@Column(name = "tipo_imovel")
+	@Enumerated(EnumType.ORDINAL)
+	private TipoImovel tipoImovel;
+
+	@Embedded
+	private EnderecoImovel enderecoImovel;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "codigo_proprietario")
+	private Cliente cliente;
+
+	@OneToMany(mappedBy = "imovel")
+	private Set<LocacaoImovel> locacoes = new LinkedHashSet<LocacaoImovel>();
+
 }

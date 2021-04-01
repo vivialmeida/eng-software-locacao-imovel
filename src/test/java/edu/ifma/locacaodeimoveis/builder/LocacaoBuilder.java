@@ -1,38 +1,35 @@
 package edu.ifma.locacaodeimoveis.builder;
 
-import edu.ifma.locacaodeimoveis.model.Cliente;
-import edu.ifma.locacaodeimoveis.model.Imovel;
-import edu.ifma.locacaodeimoveis.model.Locacao;
-import edu.ifma.locacaodeimoveis.model.TipoImovel;
+import edu.ifma.locacaodeimoveis.model.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class LocacaoBuilder {
-    private Locacao locacao;
+    private LocacaoImovel locacao;
 
     private LocacaoBuilder() {
     }
 
     public static LocacaoBuilder umaLocacao() {
         LocacaoBuilder builder = new LocacaoBuilder();
-        Cliente cliente = ClienteBuilder.umCliente().comId(1L).constroi();
-        Imovel imovel = ImovelBuilder.umImovel().comId(2L).constroi();
-        builder.locacao = new Locacao(imovel, cliente);
+        Cliente cliente = ClienteBuilder.umCliente().comId(1).constroi();
+        Imovel imovel = ImovelBuilder.umImovel().comId(2).constroi();
+        builder.locacao = new LocacaoImovel();
+        builder.locacao.setCliente(cliente);
+        builder.locacao.setImovel(imovel);
         builder.locacao.setValorAluguel(BigDecimal.valueOf(500));
-        builder.locacao.setPercentualMulta(0);
         builder.locacao.setDiaVencimento(10);
         builder.locacao
                 .setDataInicio(LocalDate.of(2020, 12, 10));
         builder.locacao
                 .setDataFim(LocalDate.of(2020, 12, 17));
         builder.locacao.setAtivo(true);
-        builder.locacao.setObservacao("Próximo a hospital e shoppping");
         return builder;
     }
 
-    public LocacaoBuilder comId(Long id) {
-        locacao.setIdLocacao(id);
+    public LocacaoBuilder comId(Integer id) {
+        locacao.setId(id);
         return this;
     }
 
@@ -56,18 +53,22 @@ public class LocacaoBuilder {
         return this;
     }
 
-    public LocacaoBuilder noBairro(String bairro) {
-        locacao.getImovel().setBairro(bairro);
+    public LocacaoBuilder noEndereco(String bairro) {
+        EnderecoImovel enderecoImovel = new EnderecoImovel();
+        enderecoImovel.setBairro("Cohama");
+        enderecoImovel.setCep("65532-884");
+        enderecoImovel.setZonaCidade(ZonaCidade.CENTRAL);
+        locacao.getImovel().setEnderecoImovel(enderecoImovel);
         return this;
     }
 
     public LocacaoBuilder paraUmClienteDeNome(String nome) {
-        locacao.getInquilino().setNomeCliente(nome);
+        locacao.getCliente().setNome(nome);
         return this;
     }
 
     public LocacaoBuilder paraUmCliente(Cliente cliente) {
-        locacao.setInquilino(cliente);
+        locacao.setCliente(cliente);
         return this;
     }
 
@@ -76,7 +77,7 @@ public class LocacaoBuilder {
         return this;
     }
 
-    public Locacao constroi() {
+    public LocacaoImovel constroi() {
         return locacao;
     }
 }
