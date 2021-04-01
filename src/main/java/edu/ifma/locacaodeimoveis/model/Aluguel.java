@@ -36,13 +36,20 @@ public class Aluguel {
 		if (dataPagamento.isAfter(dataVencimento)) {
 			
 			long diferencaEmDias 	= ChronoUnit.DAYS.between(dataVencimento, dataPagamento);
-			BigDecimal valorAluguel = locacao.getValorAluguel();	
+			BigDecimal valorAluguel = locacao.getValorAluguel();
+			BigDecimal tetoMulta  = valorAluguel.multiply(new BigDecimal(0.08));
 			BigDecimal juro 		= null;
 			
-			juro = valorAluguel.multiply(new BigDecimal("0.2")); 				
-			juro = juro.multiply(new BigDecimal("0.0033")); 						
-			juro = juro.multiply(new BigDecimal(Long.toString(diferencaEmDias))); 	
-			
+			juro = valorAluguel.multiply(new BigDecimal("0.0033"));
+			juro = juro.multiply(new BigDecimal(Long.toString(diferencaEmDias)));
+
+			if (juro.compareTo(tetoMulta) == 1) {
+
+				valorAluguel = valorAluguel.add(tetoMulta);
+			}else {
+				valorAluguel = valorAluguel.add(juro);
+			}
+
 			return valorAluguel.add(juro);
 		
 		} else {
