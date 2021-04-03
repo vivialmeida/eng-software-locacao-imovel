@@ -4,6 +4,7 @@ import edu.ifma.locacaodeimoveis.model.Cliente;
 import edu.ifma.locacaodeimoveis.model.LocacaoImovel;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -33,5 +34,6 @@ public class LocacaoImovelRepository extends GenericRepository<LocacaoImovel> {
 					  .getResultList();
 		
 	}
+
 
 }

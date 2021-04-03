@@ -2,6 +2,7 @@ package edu.ifma.locacaodeimoveis.service;
 
 import edu.ifma.locacaodeimoveis.model.Aluguel;
 import edu.ifma.locacaodeimoveis.model.Cliente;
+import edu.ifma.locacaodeimoveis.model.LocacaoImovel;
 import edu.ifma.locacaodeimoveis.repository.AluguelRepository;
 import edu.ifma.locacaodeimoveis.util.JpaUtil;
 
@@ -13,6 +14,7 @@ public class GestaoAluguelService extends GenericService<Aluguel> {
 	
 	private static final EntityManager MANAGER = JpaUtil.getEntityManager();
 	private static final AluguelRepository repositorio = new AluguelRepository(MANAGER);
+	private  EmailService emailService;
 
 	public GestaoAluguelService() {
 		super(MANAGER, repositorio);
@@ -111,6 +113,16 @@ public class GestaoAluguelService extends GenericService<Aluguel> {
 			
 			throw new NegocioException("Não é possível listar Alugueis que foram pagos em atraso da dataVencimento " + e);
 		}
+	}
+
+
+	public void notificaUsuariosEmAtraso() {
+
+		List<Aluguel> alugueisAtrasados =  repositorio.emAtraso();
+
+		alugueisAtrasados.forEach(aluguel ->
+			emailService.notifica(aluguel.getLocacao().getCliente()
+			));
 	}
 	
 	public void closeRecursos() {
