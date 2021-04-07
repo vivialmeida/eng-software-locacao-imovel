@@ -7,13 +7,13 @@ import edu.ifma.locacaodeimoveis.model.Cliente;
 import edu.ifma.locacaodeimoveis.repository.ClienteRepository;
 import edu.ifma.locacaodeimoveis.util.JpaUtil;
 
-public class GestaoClienteService extends GenericService<Cliente> {
+public class ClienteService extends GenericService<Cliente> {
 
 	private static final EntityManager MANAGER = JpaUtil.getEntityManager();
 	private static final ClienteRepository repositorio = new ClienteRepository(MANAGER);
 	
 	
-	public GestaoClienteService() {
+	public ClienteService() {
 		super(MANAGER, repositorio);
 	}
 	

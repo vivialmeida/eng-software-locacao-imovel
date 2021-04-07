@@ -10,12 +10,12 @@ import edu.ifma.locacaodeimoveis.model.LocacaoImovel;
 import edu.ifma.locacaodeimoveis.repository.LocacaoImovelRepository;
 import edu.ifma.locacaodeimoveis.util.JpaUtil;
 
-public class GestaoLocacaoImovelService extends GenericService<LocacaoImovel> {
+public class LocacaoImovelService extends GenericService<LocacaoImovel> {
 
 	private static final EntityManager MANAGER = JpaUtil.getEntityManager();
 	private static final LocacaoImovelRepository repositorio = new LocacaoImovelRepository(MANAGER);
 	
-	public GestaoLocacaoImovelService() {
+	public LocacaoImovelService() {
 		super(MANAGER, repositorio);
 	}
 	

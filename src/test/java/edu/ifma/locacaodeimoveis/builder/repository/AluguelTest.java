@@ -3,26 +3,26 @@ package edu.ifma.locacaodeimoveis.builder.repository;
 
 import edu.ifma.locacaodeimoveis.model.Aluguel;
 import edu.ifma.locacaodeimoveis.model.Cliente;
-import edu.ifma.locacaodeimoveis.service.GestaoAluguelService;
-import edu.ifma.locacaodeimoveis.service.GestaoClienteService;
+import edu.ifma.locacaodeimoveis.service.AluguelService;
+import edu.ifma.locacaodeimoveis.service.ClienteService;
 import edu.ifma.locacaodeimoveis.service.NegocioException;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import java.math.BigDecimal;
+public class AluguelTest {
 
-public class AluguelRepositoryTest {
-
-	private static GestaoAluguelService aluguelService;
-	private static GestaoClienteService clienteService;
+	private static AluguelService aluguelService;
+	private static ClienteService clienteService;
 	
 	@BeforeClass
 	public static void antes() {
-		aluguelService = new GestaoAluguelService();
-		clienteService = new GestaoClienteService();
+		aluguelService = new AluguelService();
+		clienteService = new ClienteService();
 	}
 	
 	@AfterClass
@@ -32,17 +32,19 @@ public class AluguelRepositoryTest {
 	
 	@Test
 	public void listaTodosAlugueisDoInquilino() {
+
+		List<Aluguel> alugueis = new ArrayList<>();
+
 		try {
-			
+
 			Cliente cliente = clienteService.buscaPorId(2);
-			
-			for (Aluguel aluguel : aluguelService.listaTodosAlugueisDoInquilino(cliente)) {
-				System.out.println(aluguel);
-			}
-			
+
+			alugueis = aluguelService.listaTodosAlugueisDoInquilino(cliente);
+
 		} catch (NegocioException e) {
 			e.printStackTrace();
 		}
+		Assert.assertFalse(alugueis.isEmpty());
 	}
 	
 	@Test
@@ -52,7 +54,7 @@ public class AluguelRepositoryTest {
 			
 			Cliente cliente = clienteService.buscaPorId(1);
 			
-			for (Aluguel aluguel : aluguelService.listaTodosAlugueisPagosDoInquilino(cliente)) {
+			for (Aluguel aluguel : aluguelService.listaDeTodosAlugueisPagosEmAtrasoNaDataDeVencimento()) {
 				System.out.println(aluguel);
 			}
 			

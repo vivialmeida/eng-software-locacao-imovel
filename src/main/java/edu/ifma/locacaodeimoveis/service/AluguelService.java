@@ -2,19 +2,25 @@ package edu.ifma.locacaodeimoveis.service;
 
 import edu.ifma.locacaodeimoveis.model.Aluguel;
 import edu.ifma.locacaodeimoveis.model.Cliente;
+import edu.ifma.locacaodeimoveis.model.LocacaoImovel;
 import edu.ifma.locacaodeimoveis.repository.AluguelRepository;
+import edu.ifma.locacaodeimoveis.repository.LocacaoImovelRepository;
 import edu.ifma.locacaodeimoveis.util.JpaUtil;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
-public class GestaoAluguelService extends GenericService<Aluguel> {
+public class AluguelService extends GenericService<Aluguel> {
+
 	
 	private static final EntityManager MANAGER = JpaUtil.getEntityManager();
 	private static final AluguelRepository repositorio = new AluguelRepository(MANAGER);
+	private static final LocacaoImovelRepository repositorioImovel = new LocacaoImovelRepository(MANAGER);
 
-	public GestaoAluguelService() {
+	private LocacaoImovelService locacaoImovelService = new LocacaoImovelService();
+
+	public AluguelService() {
 		super(MANAGER, repositorio);
 	}
 	
@@ -23,6 +29,7 @@ public class GestaoAluguelService extends GenericService<Aluguel> {
 		
 		try {
 			if (aluguel.getId() == null) {
+				validaValorAluguel(aluguel);
 				super.salvaObjeto(aluguel);
 			} else {
 				super.atualizaObjeto(aluguel);
@@ -33,7 +40,17 @@ public class GestaoAluguelService extends GenericService<Aluguel> {
 		}
 		
 	}
-	
+
+	private void validaValorAluguel(Aluguel aluguel) throws NegocioException {
+		LocacaoImovel locacaoImovel =  locacaoImovelService.buscaPorId(aluguel.getLocacao().getId());
+		 if(aluguel.getValorPago().compareTo(locacaoImovel.getValorAluguel()) <0){
+		 	throw new NegocioException("Valor do aluguel é inferior ao da locacao ");
+		 }
+
+
+
+	}
+
 	public void exluiAluguel(Integer id) throws NegocioException {
 			
 			try {
@@ -88,19 +105,7 @@ public class GestaoAluguelService extends GenericService<Aluguel> {
 		
 	}
 	
-	public List<Aluguel> listaTodosAlugueisPagosDoInquilino(Cliente cliente) throws NegocioException {
-		
-		try {
-			
-			return repositorio.listaTodosAlugueisPagosDoInquilino(cliente);
-			
-		} catch (Exception e) {
-			
-			throw new NegocioException("Não é possível listar Alugueis pagos deste Cliente " + e);
-		}
-		
-	}
-	
+
 	public List<Aluguel> listaDeTodosAlugueisPagosEmAtrasoNaDataDeVencimento() throws NegocioException {
 		
 		try {
@@ -112,7 +117,9 @@ public class GestaoAluguelService extends GenericService<Aluguel> {
 			throw new NegocioException("Não é possível listar Alugueis que foram pagos em atraso da dataVencimento " + e);
 		}
 	}
-	
+
+
+
 	public void closeRecursos() {
 		MANAGER.close();
 		JpaUtil.close();

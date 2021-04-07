@@ -24,7 +24,7 @@ public class Principal {
 		cliente.setTelefone1("(98)3237-1355");
 		cliente.setTelefone2("(98)98703-8178");
 		
-		GestaoClienteService gcs = new GestaoClienteService();
+		ClienteService gcs = new ClienteService();
 		gcs.adicionaOuAtualizaCliente(cliente);
 		gcs.closeRecursos();
 		
@@ -53,7 +53,7 @@ public class Principal {
 		imovel.setTipoImovel(TipoImovel.KITNET);
 	
 	
-		GestaoImovelService gImovel = new GestaoImovelService();
+		ImovelService gImovel = new ImovelService();
 		gImovel.adicionaOuAtualizaImovel(imovel);
 		gImovel.closeRecursos();
 
@@ -61,10 +61,10 @@ public class Principal {
 		
 		/**LocacaoImovel**/
 		
-		GestaoLocacaoImovelService glis = new GestaoLocacaoImovelService();
+		LocacaoImovelService glis = new LocacaoImovelService();
 		Map<Cliente, List<LocacaoImovel>> locacoes = glis.listaTodasLocacoesPorCliente();
 		
-		GestaoClienteService gcs02 = new GestaoClienteService();
+		ClienteService gcs02 = new ClienteService();
 		Cliente cliente1 = gcs.buscaPorId(1);
 		Cliente cliente2 = gcs.buscaPorId(2);
 		
@@ -92,10 +92,10 @@ public class Principal {
 	
 		//Lista todos os alugueis de um determinado Inquilino
 
-		GestaoClienteService gcs03 = new GestaoClienteService();
+		ClienteService gcs03 = new ClienteService();
 		Cliente cliente3 = gcs.buscaPorId(2);
 		
-		GestaoAluguelService gla = new GestaoAluguelService();
+		AluguelService gla = new AluguelService();
 		List<Aluguel> alugueis = gla.listaTodosAlugueisDoInquilino(cliente1);
 		
 		for (Aluguel aluguel1 : alugueis) {
@@ -106,10 +106,10 @@ public class Principal {
 
 		
 //		Lista de totos os alugueis pagos de um determinado inquilino
-		GestaoClienteService gcs01 = new GestaoClienteService();
+		ClienteService gcs01 = new ClienteService();
 		Cliente cliente4 = gcs.buscaPorId(1);
 
-		GestaoAluguelService gla1 = new GestaoAluguelService();
+		AluguelService gla1 = new AluguelService();
 		List<Aluguel> alugueisList = gla.listaTodosAlugueisPagosDoInquilino(cliente1);
 
 		for (Aluguel aluguel1 : alugueisList) {
@@ -119,7 +119,7 @@ public class Principal {
 		gla.closeRecursos();
 
 
-		GestaoAluguelService gla02 = new GestaoAluguelService();
+		AluguelService gla02 = new AluguelService();
 		List<Aluguel> alugueisList2 = gla.listaDeTodosAlugueisPagosEmAtrasoNaDataDeVencimento();
 		
 		for (Aluguel aluguel1 : alugueisList2) {
@@ -141,7 +141,7 @@ public class Principal {
 		//Juros do aluguel atrasado
 		
 
-		GestaoAluguelService gla04 = new GestaoAluguelService();
+		AluguelService gla04 = new AluguelService();
 		List<Aluguel> alugueisList3 = gla.listaDeTodosAlugueisPagosEmAtrasoNaDataDeVencimento();
 
 		for (Aluguel aluguel1 : alugueisList3) {

@@ -23,13 +23,7 @@ public class AluguelRepository extends GenericRepository<Aluguel> {
 		
 	}
 	
-	public List<Aluguel> listaTodosAlugueisPagosDoInquilino(Cliente cliente) throws Exception {
-		
-		return manager.createQuery("from Aluguel a where a.locacao.cliente = :cliente and a.dataPagamento is not null", Aluguel.class)
-					  .setParameter("cliente", cliente)
-					  .getResultList();
-	}
-	
+
 	public List<Aluguel> listaDeTodosAlugueisPagosEmAtrasoNaDataDeVencimento() throws Exception {
 		
 		return manager.createQuery("from Aluguel a where dataPagamento > dataVencimento", Aluguel.class)

@@ -4,16 +4,17 @@ import java.math.BigDecimal;
 import java.util.List;
 import javax.persistence.EntityManager;
 import edu.ifma.locacaodeimoveis.model.Imovel;
+import edu.ifma.locacaodeimoveis.model.TipoImovel;
 import edu.ifma.locacaodeimoveis.repository.ImovelRepository;
 import edu.ifma.locacaodeimoveis.util.JpaUtil;
 
-public class GestaoImovelService extends GenericService<Imovel> {
+public class ImovelService extends GenericService<Imovel> {
 	
 	private static final EntityManager MANAGER = JpaUtil.getEntityManager();
 	private static final ImovelRepository repositorio = new ImovelRepository(MANAGER);
 
 
-	public GestaoImovelService() {
+	public ImovelService() {
 		super(MANAGER, repositorio);
 	}
 	
@@ -88,7 +89,19 @@ public class GestaoImovelService extends GenericService<Imovel> {
 			
 			throw new NegocioException("Não existe Imoveis com valor abaixo do informado no banco de dados  " + e);
 		}
+	}public List<Imovel> listaDeImoveisPorTipo(TipoImovel tipo) throws NegocioException {
+
+		try {
+
+			return repositorio.listaDeImoveisPorTipo(tipo);
+
+		} catch (Exception e) {
+
+			throw new NegocioException("Não existe Imoveis com valor abaixo do informado no banco de dados  " + e);
+		}
 	}
+
+
 	
 	public void closeRecursos() {
 		MANAGER.close();
