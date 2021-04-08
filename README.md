@@ -1,5 +1,5 @@
 
 ## Locacao de imóveis
-#### Implementação de Testes para uma API REST usando Spring Boot para um fragmento de um sistema de imobiliária.
+#### Implementação de Testes de integracao simulando um sistema de locacao de imoveis.
 
 * Atividade baseada no arquivo "_engsoft.pdf"

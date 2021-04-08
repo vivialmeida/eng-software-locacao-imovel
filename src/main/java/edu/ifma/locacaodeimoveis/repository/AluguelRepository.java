@@ -2,6 +2,8 @@ package edu.ifma.locacaodeimoveis.repository;
 
 import edu.ifma.locacaodeimoveis.model.Aluguel;
 import edu.ifma.locacaodeimoveis.model.Cliente;
+
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -30,10 +32,10 @@ public class AluguelRepository extends GenericRepository<Aluguel> {
 					  .getResultList();
 	}
 
-
-	public List<Aluguel> listaDeTodosAlugueisPendentes() throws Exception {
-
-		return manager.createQuery("from Aluguel a where dataPagamento = null  and  dataVencimento < now()", Aluguel.class)
-				.getResultList();
+	public List<Aluguel> emAtraso() {
+		return manager
+			.createQuery( "from Aluguel  a from  where a.dataPagamento is null and a.dataVencimento < :hoje", Aluguel.class)
+			.setParameter("hoje", LocalDate.now() )
+			.getResultList();
 	}
 }

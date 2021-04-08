@@ -18,7 +18,7 @@ public class AluguelService extends GenericService<Aluguel> {
 	private static final EntityManager MANAGER = JpaUtil.getEntityManager();
 	private static final AluguelRepository repositorio = new AluguelRepository(MANAGER);
 	private static final LocacaoImovelRepository repositorioImovel = new LocacaoImovelRepository(MANAGER);
-	EmailService emailService = new EmailService();
+	private EmailService emailService = new EmailService();
 
 	private LocacaoImovelService locacaoImovelService = new LocacaoImovelService();
 
@@ -120,17 +120,14 @@ public class AluguelService extends GenericService<Aluguel> {
 		}
 	}
 
+	public void notificaUsuariosEmAtraso() {
 
-	public void enviarEmailParaAlugueisEmAtraso() throws Exception {
-		List<Aluguel> aluguels = repositorio.listaDeTodosAlugueisPendentes();
-		aluguels.forEach(aluguel -> {
-			if (aluguel.getDataPagamento().isBefore(LocalDate.now()) && aluguel.getDataPagamento()== null){
-				emailService.enviarEmailaluguel(aluguel.getLocacao().getCliente());
-			}
-		});
+		List<Aluguel> alugueisAtrasados =  repositorio.emAtraso();
 
+		alugueisAtrasados.forEach(aluguel ->
+			emailService.enviarEmailaluguel(aluguel.getLocacao().getCliente()
+			));
 	}
-
 
 	public void closeRecursos() {
 		MANAGER.close();
