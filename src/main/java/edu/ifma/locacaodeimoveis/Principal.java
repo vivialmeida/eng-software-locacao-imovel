@@ -110,7 +110,7 @@ public class Principal {
 		Cliente cliente4 = gcs.buscaPorId(1);
 
 		AluguelService gla1 = new AluguelService();
-		List<Aluguel> alugueisList = gla.listaTodosAlugueisPagosDoInquilino(cliente1);
+		List<Aluguel> alugueisList = gla.listaTodosAlugueisDoInquilino(cliente1);
 
 		for (Aluguel aluguel1 : alugueisList) {
 			System.out.println(aluguel1);

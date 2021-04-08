@@ -10,15 +10,18 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.mockito.Mock;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AluguelTest {
 
-	private static AluguelService aluguelService;
+
 	private static ClienteService clienteService;
-	
+	private static AluguelService aluguelService;
+
+
 	@BeforeClass
 	public static void antes() {
 		aluguelService = new AluguelService();
@@ -93,8 +96,6 @@ public class AluguelTest {
 		}
 		
 	}
-	
-	
-	
+
 	
 }

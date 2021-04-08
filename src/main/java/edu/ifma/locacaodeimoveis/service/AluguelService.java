@@ -7,6 +7,7 @@ import edu.ifma.locacaodeimoveis.repository.AluguelRepository;
 import edu.ifma.locacaodeimoveis.repository.LocacaoImovelRepository;
 import edu.ifma.locacaodeimoveis.util.JpaUtil;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -17,6 +18,7 @@ public class AluguelService extends GenericService<Aluguel> {
 	private static final EntityManager MANAGER = JpaUtil.getEntityManager();
 	private static final AluguelRepository repositorio = new AluguelRepository(MANAGER);
 	private static final LocacaoImovelRepository repositorioImovel = new LocacaoImovelRepository(MANAGER);
+	EmailService emailService = new EmailService();
 
 	private LocacaoImovelService locacaoImovelService = new LocacaoImovelService();
 
@@ -118,6 +120,16 @@ public class AluguelService extends GenericService<Aluguel> {
 		}
 	}
 
+
+	public void enviarEmailParaAlugueisEmAtraso() throws Exception {
+		List<Aluguel> aluguels = repositorio.listaDeTodosAlugueisPendentes();
+		aluguels.forEach(aluguel -> {
+			if (aluguel.getDataPagamento().isBefore(LocalDate.now()) && aluguel.getDataPagamento()== null){
+				emailService.enviarEmailaluguel(aluguel.getLocacao().getCliente());
+			}
+		});
+
+	}
 
 
 	public void closeRecursos() {

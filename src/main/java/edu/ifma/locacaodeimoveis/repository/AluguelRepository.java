@@ -29,4 +29,11 @@ public class AluguelRepository extends GenericRepository<Aluguel> {
 		return manager.createQuery("from Aluguel a where dataPagamento > dataVencimento", Aluguel.class)
 					  .getResultList();
 	}
+
+
+	public List<Aluguel> listaDeTodosAlugueisPendentes() throws Exception {
+
+		return manager.createQuery("from Aluguel a where dataPagamento = null  and  dataVencimento < now()", Aluguel.class)
+				.getResultList();
+	}
 }
