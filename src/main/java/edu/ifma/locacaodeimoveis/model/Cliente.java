@@ -7,13 +7,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.LinkedHashSet;
 
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -50,8 +44,8 @@ public class Cliente {
 	
 	@Column(name = "data_nascimento", nullable = true)
 	private LocalDate dataNascimento;
-	
-	@OneToMany(mappedBy = "cliente")
+
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.MERGE)
 	private Set<LocacaoImovel> locacoes = new LinkedHashSet<LocacaoImovel>();
 
 }

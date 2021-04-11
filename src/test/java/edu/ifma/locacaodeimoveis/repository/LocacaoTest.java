@@ -1,4 +1,4 @@
-package edu.ifma.locacaodeimoveis.builder.repository;
+package edu.ifma.locacaodeimoveis.repository;
 
 import edu.ifma.locacaodeimoveis.service.LocacaoImovelService;
 import org.junit.AfterClass;

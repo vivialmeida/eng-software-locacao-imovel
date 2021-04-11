@@ -1,4 +1,4 @@
-package edu.ifma.locacaodeimoveis.builder.repository;
+package edu.ifma.locacaodeimoveis.repository;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

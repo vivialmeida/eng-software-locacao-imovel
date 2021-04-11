@@ -16,6 +16,7 @@
       <property name="javax.persistence.jdbc.driver"  value="com.mysql.cj.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.url"  	value="jdbc:mysql://localhost/dbimovel?useSSL=false&amp;serverTimezone=UTC&amp;createDatabaseIfNotExist=true"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.password" value="root"/>
 
       <!-- Configurações específicas do Hibernate -->
       <property name="hibernate.dialect" 
@@ -37,9 +38,10 @@
 
       <!-- Propriedades JDBC -->
 
-      <property name="javax.persistence.jdbc.driver"  value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.driver"  value="com.mysql.cj.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.url"  	value="jdbc:mysql://localhost/dbimoveltest?useSSL=false&amp;serverTimezone=UTC&amp;createDatabaseIfNotExist=true"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.password" value="root"/>
 
       <!-- Configurações específicas do Hibernate -->
       <property name="hibernate.dialect"

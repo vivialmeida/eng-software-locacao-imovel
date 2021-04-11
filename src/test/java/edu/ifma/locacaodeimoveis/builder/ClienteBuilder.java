@@ -13,9 +13,11 @@ public class ClienteBuilder {
     public static ClienteBuilder umCliente() {
         ClienteBuilder builder = new ClienteBuilder();
         builder.cliente = new Cliente();
+//        builder.cliente.setId(1);
         builder.cliente.setNome("Akila");
         builder.cliente.setDataNascimento(LocalDate.of(2000, 12, 1));
         builder.cliente.setCpf("123.123.123-12");
+        builder.cliente.setRg("026892546225");
         builder.cliente.setEmail("akila@email.com");
         builder.cliente.setTelefone1("986554653");
 

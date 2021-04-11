@@ -43,11 +43,11 @@ public class LocacaoImovel {
 	@JoinColumn(name = "codigo_imovel")
 	private Imovel imovel;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = true)
 	@JoinColumn(name = "codigo_inquilino")
 	private Cliente cliente;
 	
-	@OneToMany(mappedBy = "locacao")
+	@OneToMany(mappedBy = "locacao", cascade = CascadeType.MERGE)
 	private Set<Aluguel> alugueis = new LinkedHashSet<Aluguel>();
 
 	@PrePersist

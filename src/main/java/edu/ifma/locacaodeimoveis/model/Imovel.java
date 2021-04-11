@@ -51,11 +51,11 @@ public class Imovel {
 	@Embedded
 	private EnderecoImovel enderecoImovel;
 
-	@ManyToOne(optional = false)
+	@ManyToOne
 	@JoinColumn(name = "codigo_proprietario")
 	private Cliente cliente;
 
-	@OneToMany(mappedBy = "imovel")
+	@OneToMany(mappedBy = "imovel", cascade = CascadeType.MERGE)
 	private Set<LocacaoImovel> locacoes = new LinkedHashSet<LocacaoImovel>();
 
 }

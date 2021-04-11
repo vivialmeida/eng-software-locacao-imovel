@@ -1,4 +1,4 @@
-package edu.ifma.locacaodeimoveis.builder.repository;
+package edu.ifma.locacaodeimoveis.repository;
 
 
 import edu.ifma.locacaodeimoveis.model.Aluguel;
@@ -10,7 +10,6 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -14,7 +14,7 @@ public class LocacaoBuilder {
     public static LocacaoBuilder umaLocacao() {
         LocacaoBuilder builder = new LocacaoBuilder();
         Cliente cliente = ClienteBuilder.umCliente().comId(1).constroi();
-        Imovel imovel = ImovelBuilder.umImovel().comId(2).constroi();
+        Imovel imovel = ImovelBuilder.umImovel().constroi();
         builder.locacao = new LocacaoImovel();
         builder.locacao.setCliente(cliente);
         builder.locacao.setImovel(imovel);
@@ -25,6 +25,8 @@ public class LocacaoBuilder {
         builder.locacao
                 .setDataFim(LocalDate.of(2020, 12, 17));
         builder.locacao.setAtivo(true);
+        builder.locacao.setPeriodicidade("mes");
+        builder.locacao.setResponsavelPagamento("Inquilino");
         return builder;
     }
 
