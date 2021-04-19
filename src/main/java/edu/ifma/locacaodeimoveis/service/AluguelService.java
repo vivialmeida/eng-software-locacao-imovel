@@ -4,37 +4,29 @@ import edu.ifma.locacaodeimoveis.model.Aluguel;
 import edu.ifma.locacaodeimoveis.model.Cliente;
 import edu.ifma.locacaodeimoveis.model.LocacaoImovel;
 import edu.ifma.locacaodeimoveis.repository.AluguelRepository;
-import edu.ifma.locacaodeimoveis.repository.LocacaoImovelRepository;
 import edu.ifma.locacaodeimoveis.util.JpaUtil;
-
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
-public class AluguelService extends GenericService<Aluguel> {
+public class AluguelService{
 
 	
-	private static final EntityManager MANAGER = JpaUtil.getEntityManager();
-	private static final AluguelRepository repositorio = new AluguelRepository(MANAGER);
-	private static final LocacaoImovelRepository repositorioImovel = new LocacaoImovelRepository(MANAGER);
+	private  EntityManager MANAGER = JpaUtil.getEntityManager();
+	private AluguelRepository repositorio = new AluguelRepository(MANAGER);
 	private EmailService emailService = new EmailService();
 
 	private LocacaoImovelService locacaoImovelService = new LocacaoImovelService();
 
-	public AluguelService() {
-		super(MANAGER, repositorio);
-	}
-	
 	
 	public void adicionaOuAtualizaAluguel(Aluguel aluguel) throws NegocioException {
 		
 		try {
 			if (aluguel.getId() == null) {
 				validaValorAluguel(aluguel);
-				super.salvaObjeto(aluguel);
+				repositorio.salva(aluguel);
 			} else {
-				super.atualizaObjeto(aluguel);
+				repositorio.atualiza(aluguel);
 			}
 
 		} catch (Exception e) {
@@ -56,8 +48,8 @@ public class AluguelService extends GenericService<Aluguel> {
 	public void exluiAluguel(Integer id) throws NegocioException {
 			
 			try {
-				
-				super.exluiObjeto(id);
+
+				repositorio.exclui(id);
 				
 			} catch (Exception e) {
 				
@@ -71,7 +63,7 @@ public class AluguelService extends GenericService<Aluguel> {
 		
 		try {
 
-			return super.listaObjetos();
+			return repositorio.lista();
 			
 		} catch (Exception e) {
 			
@@ -84,7 +76,7 @@ public class AluguelService extends GenericService<Aluguel> {
 		
 		try {
 			
-			return super.buscaPorId(id);
+			return repositorio.buscaPorId(id);
 
 		} catch(Exception e) {
 			
@@ -134,6 +126,13 @@ public class AluguelService extends GenericService<Aluguel> {
 		JpaUtil.close();
 	}
 
+	public void  setFields(EntityManager entityManager, AluguelRepository repositorio){
+		this.MANAGER = entityManager;
+		this.repositorio = repositorio;
+
+
+
+	}
 	
 	
 }

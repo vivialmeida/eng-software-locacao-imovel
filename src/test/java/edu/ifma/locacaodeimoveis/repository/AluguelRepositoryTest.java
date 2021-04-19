@@ -20,6 +20,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
 
 public class AluguelRepositoryTest {
 
@@ -124,6 +126,19 @@ public class AluguelRepositoryTest {
 
     Assert.assertEquals(cliente1.getNome(), "Viviane");
     Assert.assertThat(new BigDecimal(500), CoreMatchers.is(aluguel.getValorPago()));
+
+  }
+
+
+  @Test
+  public void testAluguelComMulta() throws Exception {
+
+    Aluguel aluguel = AluguelBuilder.umAluguel().constroi();
+    aluguel.setDataVencimento(LocalDate.of(2021, 02, 10));
+    aluguel.setDataPagamento(LocalDate.of(2021, 03, 05));
+
+    Assert.assertNotSame(aluguel.valorASerPagoComMulta(),(aluguel.getLocacao().getValorAluguel()));
+    Assert.assertEquals(aluguel.valorASerPagoComMulta(), new BigDecimal(575.90).setScale(2, RoundingMode.HALF_UP));
 
   }
 }

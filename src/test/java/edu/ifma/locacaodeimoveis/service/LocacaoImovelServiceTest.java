@@ -1,5 +1,6 @@
 package edu.ifma.locacaodeimoveis.service;
 
+import edu.ifma.locacaodeimoveis.builder.LocacaoBuilder;
 import edu.ifma.locacaodeimoveis.model.Cliente;
 import edu.ifma.locacaodeimoveis.model.LocacaoImovel;
 import edu.ifma.locacaodeimoveis.repository.LocacaoImovelRepository;
@@ -29,26 +30,32 @@ public class LocacaoImovelServiceTest {
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
+    locacaoImovelService.setFields(MANAGER, repositorio);
   }
 
   @Test
   public void testAdicionaOuAtualizaLocaoImovel() throws Exception {
     locacaoImovelService.adicionaOuAtualizaLocaoImovel(new LocacaoImovel());
+    verify(repositorio).salva(any());
   }
 
   @Test
   public void testExcluiLocacaoImovel() throws Exception {
     locacaoImovelService.excluiLocacaoImovel(Integer.valueOf(0));
+    verify(repositorio).exclui(any());
   }
 
   @Test
   public void testListaTodasAsLocacoesImoveis() throws Exception {
+    when(repositorio.lista()).thenReturn(Arrays.asList(LocacaoBuilder.umaLocacao().constroi()));
     List<LocacaoImovel> result = locacaoImovelService.listaTodasAsLocacoesImoveis();
-    Assert.assertEquals(Arrays.<LocacaoImovel>asList(new LocacaoImovel()), result);
+    Assert.assertEquals(Arrays.asList(LocacaoBuilder.umaLocacao().constroi()), result);
+    Assert.assertNotNull(result);
   }
 
   @Test
   public void testBuscaPorId() throws Exception {
+    when(repositorio.buscaPorId(anyInt())).thenReturn(new LocacaoImovel());
     LocacaoImovel result = locacaoImovelService.buscaPorId(Integer.valueOf(0));
     Assert.assertEquals(new LocacaoImovel(), result);
   }
@@ -56,20 +63,10 @@ public class LocacaoImovelServiceTest {
   @Test
   public void testListaTodasLocacoesDoCliente() throws Exception {
     when(repositorio.listaTodasLocacoesDoCliente(any())).thenReturn(Arrays.<LocacaoImovel>asList(new LocacaoImovel()));
-
     List<LocacaoImovel> result = locacaoImovelService.listaTodasLocacoesDoCliente(new Cliente());
     Assert.assertEquals(Arrays.<LocacaoImovel>asList(new LocacaoImovel()), result);
   }
 
-  @Test
-  public void testListaTodasLocacoesPorCliente() throws Exception {
-    when(repositorio.listaTodasLocacoes()).thenReturn(Arrays.<LocacaoImovel>asList(new LocacaoImovel()));
-
-    Map<Cliente, List<LocacaoImovel>> result = locacaoImovelService.listaTodasLocacoesPorCliente();
-    Assert.assertEquals(new HashMap<Cliente, List<LocacaoImovel>>() {{
-      put(new Cliente(), Arrays.<LocacaoImovel>asList(new LocacaoImovel()));
-    }}, result);
-  }
 
 }
 

@@ -1,5 +1,6 @@
 package edu.ifma.locacaodeimoveis.service;
 
+import edu.ifma.locacaodeimoveis.builder.ClienteBuilder;
 import edu.ifma.locacaodeimoveis.model.Cliente;
 import edu.ifma.locacaodeimoveis.repository.ClienteRepository;
 import org.junit.Assert;
@@ -26,28 +27,37 @@ public class ClienteServiceTest {
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
+    clienteService.serFields(MANAGER, repositorio);
   }
 
   @Test
   public void testAdicionaOuAtualizaCliente() throws Exception {
     clienteService.adicionaOuAtualizaCliente(new Cliente());
+    verify(repositorio).salva(any());
   }
 
   @Test
   public void testExluiCliente() throws Exception {
     clienteService.exluiCliente(Integer.valueOf(0));
+    verify(repositorio).exclui(any());
+
   }
 
   @Test
   public void testListaTodosOsClientes() throws Exception {
+    when(repositorio.lista()).thenReturn(Arrays.asList(new Cliente()));
     List<Cliente> result = clienteService.listaTodosOsClientes();
     Assert.assertEquals(Arrays.<Cliente>asList(new Cliente()), result);
+    Assert.assertTrue(result.size() == 1);
+
   }
 
   @Test
   public void testBuscaPorId() throws Exception {
+    when(repositorio.buscaPorId(anyInt())).thenReturn(ClienteBuilder.umCliente().constroi());
     Cliente result = clienteService.buscaPorId(Integer.valueOf(0));
-    Assert.assertEquals(new Cliente(), result);
+    Assert.assertEquals(ClienteBuilder.umCliente().constroi(), result);
+
   }
 
 }

@@ -10,8 +10,10 @@ import edu.ifma.locacaodeimoveis.repository.LocacaoImovelRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.platform.commons.util.ReflectionUtils;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import javax.persistence.EntityManager;
@@ -26,38 +28,49 @@ public class AluguelServiceTest {
   AluguelRepository repositorio;
   @Mock
   LocacaoImovelService locacaoImovelService;
+
+  @Mock
+  EntityManager entityManager;
+
+  @Mock
+  EmailService emailService;
+
   @InjectMocks
   AluguelService aluguelService;
+
 
   @Before
   public void setUp() {
     MockitoAnnotations.initMocks(this);
+    aluguelService.setFields(entityManager, repositorio);
   }
 
   @Test
   public void testAdicionaOuAtualizaAluguel() throws Exception {
-    when(locacaoImovelService.buscaPorId(anyInt())).thenReturn(new LocacaoImovel());
+    when(locacaoImovelService.buscaPorId(anyInt())).thenReturn(LocacaoBuilder.umaLocacao().constroi());
 
-    aluguelService.adicionaOuAtualizaAluguel(new Aluguel());
+    aluguelService.adicionaOuAtualizaAluguel(AluguelBuilder.umAluguel().constroi());
   }
 
   @Test
   public void testExluiAluguel() throws Exception {
     aluguelService.exluiAluguel(Integer.valueOf(0));
+    verify(repositorio).exclui(any());
   }
 
   @Test
   public void testListaTodosOsAlugueis() throws Exception {
-    when(locacaoImovelService.listaObjetos()).thenReturn((List<LocacaoImovel>) Arrays.asList(LocacaoBuilder.umaLocacao().constroi()));
-
+    when(locacaoImovelService.listaTodasAsLocacoesImoveis()).thenReturn((List<LocacaoImovel>) Arrays.asList(LocacaoBuilder.umaLocacao().constroi()));
+    when(repositorio.lista()).thenReturn(Arrays.asList(new Aluguel()));
     List<Aluguel> result = aluguelService.listaTodosOsAlugueis();
     Assert.assertEquals(Arrays.<Aluguel>asList(new Aluguel()), result);
+    Assert.assertTrue(result.size() > 0);
   }
 
   @Test
   public void testBuscaPorId() throws Exception {
     when(locacaoImovelService.buscaPorId(anyInt())).thenReturn(LocacaoBuilder.umaLocacao().constroi());
-
+    when(repositorio.buscaPorId(any())).thenReturn(new Aluguel());
     Aluguel result = aluguelService.buscaPorId(Integer.valueOf(0));
     Assert.assertEquals(new Aluguel(), result);
   }
@@ -80,10 +93,24 @@ public class AluguelServiceTest {
 
   @Test
   public void testNotificaUsuariosEmAtraso() throws Exception {
-    when(repositorio.emAtraso()).thenReturn(Arrays.<Aluguel>asList(new Aluguel()));
-
+    when(repositorio.emAtraso()).thenReturn(Arrays.<Aluguel>asList(AluguelBuilder.umAluguel().constroi()));
     aluguelService.notificaUsuariosEmAtraso();
+    verify(emailService).enviarEmailaluguel(any());
   }
+
+  @Test
+  public void testNotificaUsuariosEmAtrasoComException() throws Exception {
+    Aluguel aluguel1 = AluguelBuilder.umAluguel().constroi();
+    Aluguel aluguel2 = AluguelBuilder.umAluguel().constroi();
+    Aluguel aluguel3 = AluguelBuilder.umAluguel().constroi();
+    List<Aluguel>alugueis = Arrays.asList(aluguel1,aluguel2, aluguel3);
+
+    when(repositorio.emAtraso()).thenReturn(alugueis);
+    aluguelService.notificaUsuariosEmAtraso();
+    Mockito.doThrow(EmailException.class).when(emailService).enviar();
+    verify(emailService, times(3)).enviarEmailaluguel(any());
+  }
+
 
 }
 

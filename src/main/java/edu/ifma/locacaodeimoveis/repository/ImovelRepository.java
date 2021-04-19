@@ -24,7 +24,7 @@ public class ImovelRepository extends GenericRepository<Imovel> {
 	}
 
 	public List<Imovel> listaDeImoveisPorTipo(TipoImovel tipo) throws Exception {
-		return manager.createQuery("from Imovel where tipo_imovel = :tipo", Imovel.class)
+		return manager.createQuery("from Imovel where tipoImovel = :tipo", Imovel.class)
 				.setParameter("tipo", tipo)
 				.getResultList();
 	}

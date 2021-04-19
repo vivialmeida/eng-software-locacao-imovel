@@ -3,6 +3,7 @@ package edu.ifma.locacaodeimoveis.model;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -50,11 +51,11 @@ public class Aluguel {
 				valorAluguel = valorAluguel.add(juro);
 			}
 
-			return valorAluguel.add(juro);
+			return valorAluguel.add(juro).setScale(2, RoundingMode.HALF_UP);
 		
 		} else {
 			
-			return locacao.getValorAluguel();
+			return locacao.getValorAluguel().setScale(2, RoundingMode.HALF_UP);
 			
 		}
 	}

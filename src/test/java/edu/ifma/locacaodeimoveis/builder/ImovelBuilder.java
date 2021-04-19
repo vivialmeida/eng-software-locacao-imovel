@@ -1,6 +1,7 @@
 package edu.ifma.locacaodeimoveis.builder;
 
 import edu.ifma.locacaodeimoveis.model.Imovel;
+import edu.ifma.locacaodeimoveis.model.TipoImovel;
 
 import java.math.BigDecimal;
 
@@ -18,11 +19,19 @@ public class ImovelBuilder {
         imovel.setId(id);
         return this;
     }
+    public ImovelBuilder comTipo(TipoImovel tipoImovel) {
+        imovel.setTipoImovel(tipoImovel);
+        return this;
+    }
+    public ImovelBuilder comValor(BigDecimal valor) {
+        imovel.setValorAluguelSugerido(valor);
+        return this;
+    }
 
     public static ImovelBuilder umImovel() {
         ImovelBuilder builder = new ImovelBuilder();
         builder.imovel = new Imovel();
-        builder.imovel.setValorAluguelSugerido(BigDecimal.valueOf(1800));
+        builder.imovel.setValorAluguelSugerido(BigDecimal.valueOf(800));
         builder.imovel.setVagasGaragem(1);
         builder.imovel.setNomeImovel("cs aurora");
         builder.imovel.setQuantidadeBanheiros(2);

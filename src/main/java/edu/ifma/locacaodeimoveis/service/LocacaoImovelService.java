@@ -10,23 +10,20 @@ import edu.ifma.locacaodeimoveis.model.LocacaoImovel;
 import edu.ifma.locacaodeimoveis.repository.LocacaoImovelRepository;
 import edu.ifma.locacaodeimoveis.util.JpaUtil;
 
-public class LocacaoImovelService extends GenericService<LocacaoImovel> {
+public class LocacaoImovelService{
 
-	private static final EntityManager MANAGER = JpaUtil.getEntityManager();
-	private static final LocacaoImovelRepository repositorio = new LocacaoImovelRepository(MANAGER);
+	private EntityManager MANAGER = JpaUtil.getEntityManager();
+	private LocacaoImovelRepository repositorio = new LocacaoImovelRepository(MANAGER);
 	
-	public LocacaoImovelService() {
-		super(MANAGER, repositorio);
-	}
-	
+
 	public void adicionaOuAtualizaLocaoImovel(LocacaoImovel locacaoImovel) throws NegocioException {
 		
 		try {
 			
 			if (locacaoImovel.getId() == null) {
-				super.salvaObjeto(locacaoImovel);
+				repositorio.salva(locacaoImovel);
 			} else {
-				super.atualizaObjeto(locacaoImovel);
+				repositorio.atualiza(locacaoImovel);
 			}
 			
 		} catch (Exception e) {
@@ -42,7 +39,7 @@ public class LocacaoImovelService extends GenericService<LocacaoImovel> {
 		
 		try {
 			
-			super.exluiObjeto(id);
+			repositorio.exclui(id);
 			
 		} catch (Exception e) {
 			
@@ -56,7 +53,7 @@ public class LocacaoImovelService extends GenericService<LocacaoImovel> {
 		
 		try {
 			
-			return super.listaObjetos();
+			return repositorio.lista();
 			
 		} catch (Exception e) {
 			
@@ -70,7 +67,7 @@ public class LocacaoImovelService extends GenericService<LocacaoImovel> {
 		
 		try {
 			
-			return super.buscaPorId(id);
+			return repositorio.buscaPorId(id);
 			
 		} catch (Exception e) {
 			
@@ -124,6 +121,9 @@ public class LocacaoImovelService extends GenericService<LocacaoImovel> {
 		JpaUtil.close();
 	}
 	
-	
+	public void setFields(EntityManager entityManager, LocacaoImovelRepository repositorio){
+		this.MANAGER = entityManager;
+		this.repositorio = repositorio;
+	}
 	
 }

@@ -10,10 +10,16 @@ public class EmailService {
 
     try {
 
-      //enviarEmail
+      this.enviar();
+
 
     } catch (EmailException e) {
       Logger.getLogger("Erro ao enviar email para : " + cliente.getNome());
     }
   }
+
+  public void enviar(){
+
+  }// enviar
+
 }

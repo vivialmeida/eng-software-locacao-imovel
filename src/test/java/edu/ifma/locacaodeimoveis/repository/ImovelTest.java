@@ -127,21 +127,4 @@ public class ImovelTest {
 
   }
 
-  @Test
-  public void listaDeImoveisPorTipoApartamento() {
-
-	  List<Imovel> imovelList = new ArrayList<>();
-
-	  try {
-
-    imovelList = imovelService.listaDeImoveisPorTipo(TipoImovel.APARTAMENTO);
-    } catch (NegocioException ex) {
-      ex.printStackTrace();
-    }
-
-	  Assert.assertTrue(imovelList.size() >0 );
-
-  }
-
-
 }

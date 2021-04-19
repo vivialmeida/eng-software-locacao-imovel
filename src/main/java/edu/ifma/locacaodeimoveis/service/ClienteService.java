@@ -7,25 +7,20 @@ import edu.ifma.locacaodeimoveis.model.Cliente;
 import edu.ifma.locacaodeimoveis.repository.ClienteRepository;
 import edu.ifma.locacaodeimoveis.util.JpaUtil;
 
-public class ClienteService extends GenericService<Cliente> {
+public class ClienteService {
 
-	private static final EntityManager MANAGER = JpaUtil.getEntityManager();
-	private static final ClienteRepository repositorio = new ClienteRepository(MANAGER);
-	
-	
-	public ClienteService() {
-		super(MANAGER, repositorio);
-	}
-	
+	private EntityManager MANAGER = JpaUtil.getEntityManager();
+	private ClienteRepository repositorio = new ClienteRepository(MANAGER);
+
 	
 	public void adicionaOuAtualizaCliente(Cliente cliente) throws NegocioException {
 		
 		try {
 			
 			if (cliente.getId() == null) {
-				super.salvaObjeto(cliente);
+				repositorio.salva(cliente);
 			} else {
-				super.atualizaObjeto(cliente);
+				repositorio.atualiza(cliente);
 			}
 
 		} catch (Exception e) {
@@ -40,7 +35,7 @@ public class ClienteService extends GenericService<Cliente> {
 		
 		try {
 			
-			super.exluiObjeto(id);
+			repositorio.exclui(id);
 			
 		} catch (Exception e) {
 			
@@ -53,7 +48,7 @@ public class ClienteService extends GenericService<Cliente> {
 
 		try {
 			
-			return super.listaObjetos();
+			return repositorio.lista();
 			
 		} catch (Exception e) {
 			
@@ -68,7 +63,7 @@ public class ClienteService extends GenericService<Cliente> {
 		
 		try {
 			
-			return super.buscaPorId(id);
+			return repositorio.buscaPorId(id);
 			
 		} catch (Exception e) {
 			
@@ -80,6 +75,12 @@ public class ClienteService extends GenericService<Cliente> {
 	public void closeRecursos() {
 		MANAGER.close();
 		JpaUtil.close();
+	}
+
+	public void serFields(EntityManager entityManager, ClienteRepository repositorio){
+		this.MANAGER = entityManager;
+		this.repositorio =repositorio;
+
 	}
 	
 	
